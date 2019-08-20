@@ -1,0 +1,29 @@
+package wahaha.mapper;
+
+import org.apache.ibatis.annotations.Param;
+import wahaha.po.UserOperationRecord;
+
+import java.util.Date;
+import java.util.List;
+
+public interface UserOperationRecordMapper {
+
+    /**
+     * 选择指定用户ID，或时间范围的用户操作记录
+     *
+     * @param userID    指定的用户ID
+     * @param startDate 记录的起始日期
+     * @param endDate   记录的结束日期
+     * @return 返回所有符合条件的记录
+     */
+    List<UserOperationRecord> selectUserOperationRecord(@Param("userID") Integer userID,
+                                                        @Param("startDate") Date startDate,
+                                                        @Param("endDate") Date endDate);
+
+    /**
+     * 插入用户操作记录
+     *
+     * @param userOperationRecordDO 用户操作记录
+     */
+    void insertUserOperationRecord(UserOperationRecord userOperationRecordDO);
+}

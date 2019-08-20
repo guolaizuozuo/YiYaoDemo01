@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wahaha.mapper.ErpStaffMapper">
+    <resultMap id="BaseResultMap" type="wahaha.model.ErpStaff">
+        <id column="sta_id" property="staId" jdbcType="VARCHAR"/>
+        <result column="depa_id" property="depaId" jdbcType="VARCHAR"/>
+        <result column="sta_serial" property="staSerial" jdbcType="VARCHAR"/>
+        <result column="sta_name" property="staName" jdbcType="VARCHAR"/>
+        <result column="sta_email" property="staEmail" jdbcType="VARCHAR"/>
+        <result column="sta_pwd" property="staPwd" jdbcType="VARCHAR"/>
+        <result column="sta_age" property="staAge" jdbcType="DECIMAL"/>
+        <result column="sta_sex" property="staSex" jdbcType="VARCHAR"/>
+        <result column="sta_entryTime" property="staEntrytime" jdbcType="VARCHAR"/>
+        <result column="sta_dimissionTime" property="staDimissiontime" jdbcType="VARCHAR"/>
+        <result column="sta_img" property="staImg" jdbcType="VARCHAR"/>
+        <result column="sta_backgd" property="staBackgd" jdbcType="VARCHAR"/>
+        <result column="ISVA" property="isva" jdbcType="INTEGER"/>
+        <result column="createTime" property="createtime" jdbcType="VARCHAR"/>
+        <result column="createR" property="creater" jdbcType="VARCHAR"/>
+        <result column="remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="depa_name" property="depaName" jdbcType="VARCHAR"/>
+        <result column="role_id" property="roleId" jdbcType="VARCHAR"/>
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="PER_ROLE_ID" property="perRoleId" jdbcType="VARCHAR"/>
+        <result column="ANNEX_ID" property="annexId" jdbcType="VARCHAR"/>
+        <result column="ANNEX_NAME" property="annexName" jdbcType="VARCHAR"/>
+
+    </resultMap>
+    <sql id="Base_Column_List">
+        sta_id, depa_id, sta_serial, sta_name, sta_email, sta_pwd, sta_age, sta_sex, sta_entryTime,
+        sta_dimissionTime, sta_img, sta_backgd, ISVA, createTime, createR, remark, ANNEX_ID
+    </sql>
+
+    <select id="getUser" resultMap="BaseResultMap" parameterType="wahaha.model.ErpStaff">
+        SELECT *
+        FROM erp_staff staff, erp_role role, erp_personel_role prole
+        WHERE staff.isva = '1' AND role.ISVA = '1'
+              AND staff.sta_email = #{staEmail,jdbcType=VARCHAR}
+              AND staff.sta_pwd = #{staPwd,jdbcType=VARCHAR}
+              AND role.ROLE_ID = prole.role_id
+              AND staff.sta_id = prole.sta_id
+    </select>
+
+    <select id="findAll" resultMap="BaseResultMap" parameterType="wahaha.model.ErpStaff">
+        SELECT * FROM erp_staff sta,erp_depa depa ,erp_personel_role prole,erp_role role,erp_annex annex
+        <where>
+            sta.ANNEX_ID = annex.ANNEX_ID AND sta.depa_id = depa.depa_id AND sta.sta_id = prole.sta_id AND prole.ROLE_ID = role.ROLE_ID AND sta.isva='1' AND depa.isva='1' AND role.ISVA='1' AND annex.ISVA="1"
+            <if test="roleName!=null and roleName!=''">
+                and role.role_name like concat('%',#{roleName},'%')
+            </if>
+            <if test="depaName!=null and depaName!=''">
+                and depa.depa_name like concat('%',#{depaName},'%')
+            </if>
+            <if test="staSerial!=null and staSerial!=''">
+                and sta.sta_serial like concat('%',#{staSerial},'%')
+            </if>
+            <if test="staName!=null and staName!=''">
+                and sta.sta_name like concat('%',#{staName},'%')
+            </if>
+            <if test="staEmail!=null and staEmail!=''">
+                and sta.sta_email like concat('%',#{staEmail},'%')
+            </if>
+            <if test="staAge!=null and staAge!=''">
+                and sta.sta_age like concat('%',#{staAge},'%')
+            </if>
+            <if test="staSex!=null and staSex!=''">
+                and sta.sta_sex like concat('%',#{staSex},'%')
+            </if>
+            <if test="annexName!=null and annexName!=''">
+                and annex.ANNEX_NAME like concat('%',#{annexName},'%')
+            </if>
+        </where>
+    </select>
+
+    <update id="updateEmpPhoto" parameterType="wahaha.model.ErpStaff">
+        UPDATE erp_staff e SET e.sta_img = #{staImg,jdbcType=VARCHAR} WHERE e.sta_id = #{staId,jdbcType=VARCHAR}
+    </update>
+</mapper>

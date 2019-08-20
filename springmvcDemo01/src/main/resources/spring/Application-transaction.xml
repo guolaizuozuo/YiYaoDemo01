@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd
+        http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!--   第一步：配置事务管理器-->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <!--   注入DataSource-->
+        <property name="dataSource" ref="dataSource"></property>
+    </bean>
+
+    <!--   第二步：配置事务管理器-->
+    <tx:advice id="txadvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <!--  设置进行事务操作的匹配规则 -->
+            <tx:method name="addStudent*" propagation="REQUIRED" />
+            <tx:method name="edit*" propagation="REQUIRED" />
+        </tx:attributes>
+    </tx:advice>
+    <!--   第三步：配置事务管理器-->
+    <aop:config>
+        <!--切入点-->
+        <aop:pointcut expression="execution(* wahaha.service..*.*(..))" id="pointcut1"/>
+        <!--切面-->
+        <aop:advisor advice-ref="txadvice" pointcut-ref="pointcut1"></aop:advisor>
+    </aop:config>
+
+
+</beans>

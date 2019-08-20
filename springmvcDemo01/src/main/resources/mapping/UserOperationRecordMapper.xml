@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="wahaha.mapper.UserOperationRecordMapper">
+    <resultMap id="userOperationRecord" type="wahaha.po.UserOperationRecord">
+        <id property="id" column="RECORD_ID"/>
+        <result property="userID" column="USER_ID"/>
+        <result property="userName" column="USER_NAME"/>
+        <result property="operationName" column="OPERATION_NAME"/>
+        <result property="operationTime" column="OPERATION_TIME"/>
+        <result property="operationResult" column="OPERATION_RESULT"/>
+        <result property="operationArgs" column="OPERATION_Args"/>
+    </resultMap>
+
+    <select id="selectUserOperationRecord" resultMap="userOperationRecord">
+        select
+            RECORD_ID,
+            USER_ID,
+            USER_NAME,
+            OPERATION_NAME,
+            OPERATION_TIME,
+            OPERATION_RESULT
+        from
+            erp_operation_record
+        <where>
+            <if test="userID > 0">
+                USER_ID = #{userID}
+            </if>
+            <if test="startDate != null">
+                and OPERATION_TIME >= #{startDate}
+            </if>
+            <if test="endDate != null">
+                <![CDATA[and OPERATION_TIME <= #{endDate}]]>
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertUserOperationRecord">
+        insert into erp_operation_record(USER_ID, USER_NAME, OPERATION_NAME, OPERATION_TIME, OPERATION_RESULT,OPERATION_Args)
+        values(#{userID}, #{userName}, #{operationName}, #{operationTime}, #{operationResult},#{operationArgs})
+    </insert>
+</mapper>

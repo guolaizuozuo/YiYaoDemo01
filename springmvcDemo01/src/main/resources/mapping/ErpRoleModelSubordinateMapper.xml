@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="wahaha.mapper.ErpRoleModelSubordinateMapper">
+    <resultMap id="BaseResultMap" type="wahaha.model.ErpRoleModelSubordinate">
+        <id column="SUB_ID" property="subId" jdbcType="VARCHAR"/>
+        <result column="ROLE_ID" property="roleId" jdbcType="VARCHAR"/>
+        <result column="MODEL_ID" property="modelId" jdbcType="VARCHAR"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        SUB_ID, ROLE_ID, MODEL_ID
+    </sql>
+
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+        DELETE FROM erp_role_model_subordinate
+        WHERE role_id = #{roleId,jdbcType=VARCHAR}
+    </delete>
+
+    <insert id="insertSelective" parameterType="wahaha.model.ErpRoleModelSubordinate">
+        insert into erp_role_model_subordinate
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="subId != null">
+                SUB_ID,
+            </if>
+            <if test="roleId != null">
+                ROLE_ID,
+            </if>
+            <if test="modelId != null">
+                MODEL_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="subId != null">
+                #{subId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleId != null">
+                #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="modelId != null">
+                #{modelId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <insert id="insertBatchSelective">
+        insert into erp_role_model_subordinate
+        (SUB_ID, ROLE_ID, MODEL_ID)
+        VALUES
+        <foreach collection ="RoleModes" item="RoleMode" separator =",">
+            (#{RoleMode.subId}, #{RoleMode.roleId}, #{RoleMode.modelId})
+        </foreach >
+    </insert>
+</mapper>
