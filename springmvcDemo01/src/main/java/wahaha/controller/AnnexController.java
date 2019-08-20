@@ -10,7 +10,7 @@ import wahaha.service.Annex.AnnexService;
 import java.util.List;
 
 /**
- * 分店管理
+ * 分店管理rrrrrrrrrr
  */
 @Controller
 @RequestMapping("/admin/annex")
