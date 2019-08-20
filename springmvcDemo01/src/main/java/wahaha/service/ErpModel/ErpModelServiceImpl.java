@@ -9,6 +9,7 @@ import wahaha.util.PagelayBean;
 
 import javax.annotation.Resource;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ErpModelServiceImpl implements ErpModelService {
@@ -57,5 +58,41 @@ public class ErpModelServiceImpl implements ErpModelService {
     @Override
     public List<ErpModel> findSubModel(String modelId) {
         return dao.findSubModel(modelId);
+    }
+
+    @Override
+    public int addBelowModel(String modelId, String[] modelName, String[] modelCode) {
+       int result=0;
+        for(int i =0;i<modelName.length;i++){
+            if(modelName[i]!=""){
+                ErpModel model = new ErpModel();
+                model.setModelId(UUID.randomUUID().toString());
+                model.setIsva("1");
+                model.setModelCode(modelCode[i]);
+                model.setModelName(modelName[i]);
+                model.setErpModelId(modelId);
+                dao.insertSelective(model);
+                result++;
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public int updateByPrimaryKeySelective(String[] modelId, String[] modelName, String[] modelCode) {
+        int result=0;
+        for(int i =0;i<modelName.length;i++){
+            if(modelName[i]!=""){
+                ErpModel model = new ErpModel();
+
+
+                model.setModelCode(modelCode[i]);
+                model.setModelName(modelName[i]);
+                model.setModelId(modelId[i]);
+                result+=  dao.updateByPrimaryKeySelective(model);
+
+            }
+        }
+        return result;
     }
 }

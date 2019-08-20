@@ -13,4 +13,8 @@ public interface ErpModelMapper {
 
     List<ErpModel> findSubModel(String modelId);
 
+    int insertSelective(ErpModel staff);
+    int updateByPrimaryKeySelective(ErpModel staff);
+
+
 }
