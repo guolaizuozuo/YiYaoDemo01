@@ -151,7 +151,18 @@ $(function () {
 
     })
 });
-
+function deleteModel(modelId){
+    layer.confirm('确定删除该模块吗', function(index){
+        url="admin/model/deleteModel.action";
+        data={modelId:modelId}
+        $.post(url,data,function(m){
+            if(m.mes=="ok"){
+                $("#"+modelId+"").remove();
+                layer.msg("删除成功");
+            }
+        },"json")
+    });
+};
 function deleteThis(obj) {
     var tr = $(obj).parent().parent().remove();
 }

@@ -91,5 +91,17 @@ public class ModelController {
 
     }
 
-
+    @RequestMapping("deleteModel.action")
+    @ResponseBody
+    public SsmMessage deleteModel(String modelId){
+        SsmMessage mes = new SsmMessage();
+       /*
+       删除该菜单 ，下级菜单也删除
+       int rows = modelService.deleteModel(modelId);
+        if(rows>0){
+            modelService.updateSubordinate(modelId);
+            mes.setMes("ok");
+        }*/
+        return mes;
+    }
 }
