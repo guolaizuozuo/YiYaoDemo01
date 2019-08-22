@@ -18,5 +18,8 @@ public interface ErpModelService {
     PagelayBean<ErpModel> findAll(ErpModel model,int page, int limit);
 
     List<ErpModel> findSubModel(String modelId);
+   int  addBelowModel(String modelId, String[] modelName, String[] modelCode);
+
+    int  updateByPrimaryKeySelective(String[] modelId, String[] modelName, String[] modelCode);
 
 }
